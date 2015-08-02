@@ -3,17 +3,18 @@
 import requests
 import logging
 from furl import furl
-from requests.compat import json
+import json
 from sarah.hipchat import HipChat
+from typing import Dict
 
 
 @HipChat.command('.weather')
-def weather(msg, config):
+def weather(msg: HipChat.CommandMessage, config: Dict) -> str:
     furl_obj = furl('http://api.worldweatheronline.com/free/v2/weather.ashx',
                     True)
-    furl_obj.args = {'format': 'json',
-                     'key': config.get('api_key', ''),
-                     'q': msg['text']}
+    furl_obj.add(args={'format': 'json',
+                       'key': config.get('api_key', ''),
+                       'q': msg.text})
 
     try:
         response = requests.request('GET', furl_obj.url)
@@ -29,7 +30,7 @@ def weather(msg, config):
         return 'Unknown error occurred.'
 
     if 'data' not in decoded_content:
-        logging.error('Invalid response', response.content)
+        logging.error('Invalid response %s', response.content)
         return 'Invalid response format.'
 
     if 'error' in decoded_content['data']:

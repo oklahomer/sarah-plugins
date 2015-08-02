@@ -2,12 +2,13 @@
 
 import requests
 import logging
-from requests.compat import json
+import json
 from sarah.hipchat import HipChat
+from typing import Dict
 
 
 @HipChat.command('.room_temp')
-def temperature(msg, config):
+def temperature(_: HipChat.CommandMessage, config: Dict) -> str:
     try:
         response = requests.request('GET', config.get('endpoint', ''))
     except requests.HTTPError as e:
