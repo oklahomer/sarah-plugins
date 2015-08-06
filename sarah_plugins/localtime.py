@@ -8,10 +8,9 @@ from sarah.hipchat import HipChat
 from typing import Dict
 
 
-@HipChat.command('.weather')
-def weather(msg: HipChat.CommandMessage, config: Dict) -> str:
-    furl_obj = furl('http://api.worldweatheronline.com/free/v2/weather.ashx',
-                    True)
+@HipChat.command('.localtime')
+def hipchat_localtime(msg: HipChat.CommandMessage, config: Dict) -> str:
+    furl_obj = furl('https://api.worldweatheronline.com/free/v2/tz.ashx', True)
     furl_obj.add(args={'format': 'json',
                        'key': config.get('api_key', ''),
                        'q': msg.text})
@@ -42,15 +41,12 @@ def weather(msg: HipChat.CommandMessage, config: Dict) -> str:
             return 'Malformed error message returned'
 
     try:
-        condition = data['current_condition'][0]
-        return ('Current weather at %s is %s\n'
-                '%s degrees Celsius. %s degrees Fahrenheit.' %
+        return ('Current time at %s is %s\nUTC offset is %s' %
                 (
                     data['request'][0]['query'],
-                    condition['weatherDesc'][0]['value'],
-                    condition['temp_C'],
-                    condition['temp_F']
+                    data['time_zone'][0]['localtime'],
+                    data['time_zone'][0]['utcOffset']
                 ))
     except LookupError as e:
         logging.error('Malformed response %s %s', e, response.content)
-        return 'Error on parsing response.'
+        return 'Malformed response'
