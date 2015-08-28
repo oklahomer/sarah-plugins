@@ -4,12 +4,13 @@ import requests
 import logging
 from furl import furl
 import json
-from sarah.hipchat import HipChat
+from sarah.bot.hipchat import HipChat
+from sarah.bot.values import CommandMessage
 from typing import Dict
 
 
 @HipChat.command('.localtime')
-def hipchat_localtime(msg: HipChat.CommandMessage, config: Dict) -> str:
+def hipchat_localtime(msg: CommandMessage, config: Dict) -> str:
     furl_obj = furl('https://api.worldweatheronline.com/free/v2/tz.ashx', True)
     furl_obj.add(args={'format': 'json',
                        'key': config.get('api_key', ''),
