@@ -1,4 +1,5 @@
 APScheduler==3.0.3
+feedparser==5.2.1
 furl==0.4.7
 orderedmultidict==0.7.5
 pyasn1==0.1.7
