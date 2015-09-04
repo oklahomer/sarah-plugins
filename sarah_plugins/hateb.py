@@ -5,7 +5,8 @@ import requests
 from sarah import ValueObject
 from sarah.bot.hipchat import HipChat
 
-from sarah.bot.slack import Slack
+from sarah.bot.slack import Slack, SlackMessage, MessageAttachment, \
+    AttachmentField
 from sarah.bot.values import CommandMessage, UserContext, InputOption
 from typing import Dict, Sequence, Union
 
@@ -142,12 +143,24 @@ def slack_hateb(msg: CommandMessage,
         feed = hateb.retrieve_feed(msg.text)
         gist_url = hateb.post_gist(feed)
 
-        list_string = '\n'.join(
-            ['[%d] %s : %s' % (e.bookmark_count,
-                               e.title,
-                               e.link) for e in feed.entries[:5]])
+        attachments = [
+            MessageAttachment(
+                fallback="[%d] %s : %s" % (e.bookmark_count,
+                                           e.title,
+                                           e.link),
+                fields=[AttachmentField(title="Bookmark Count",
+                                        value=str(e.bookmark_count))],
+                title_link=e.link,
+                title=e.title,
+                color="#00FF00") for e in feed.entries[:10]]
 
-        return '%s\n\n See more: %s' % (list_string, gist_url)
+        attachments.append(
+            MessageAttachment(fallback="See more at %s" % gist_url,
+                              title="See More",
+                              title_link=gist_url))
+
+        return SlackMessage(text="Category: %s" % msg.text,
+                            attachments=attachments)
     else:
         message = ("Please choose a category from below:\n%s" %
                    ", ".join(hateb.allowed_categories))
