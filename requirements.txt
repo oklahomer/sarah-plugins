@@ -8,7 +8,7 @@ pyasn1-modules==0.0.5
 pytz==2015.4
 PyYAML==3.11
 requests==2.7.0
--e git://github.com/oklahomer/sarah.git@6007045c7d34f70ad2b2f971c9ecfdc39ce5eeaf#egg=sarah-master
+-e git://github.com/oklahomer/sarah.git@15e1c879e3f98bd83e6bbdfe263ef1961636d4af#egg=sarah-master
 six==1.9.0
 sleekxmpp==1.3.1
 typing==3.5.0b1

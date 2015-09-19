@@ -138,7 +138,7 @@ hateb = Hateb()
 
 @Slack.command('.hateb')
 def slack_hateb(msg: CommandMessage,
-                _: Dict=None) -> Union[str, UserContext]:
+                _: Dict) -> Union[str, UserContext]:
     if msg.text in hateb.allowed_categories:
         feed = hateb.retrieve_feed(msg.text)
         gist_url = hateb.post_gist(feed)
@@ -171,7 +171,7 @@ def slack_hateb(msg: CommandMessage,
 
 @HipChat.command('.hateb')
 def hipchat_hateb(msg: CommandMessage,
-                  _: Dict=None) -> Union[str, UserContext]:
+                  _: Dict) -> Union[str, UserContext]:
     if msg.text in hateb.allowed_categories:
         feed = hateb.retrieve_feed(msg.text)
         gist_url = hateb.post_gist(feed)
