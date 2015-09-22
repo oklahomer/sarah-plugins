@@ -188,4 +188,4 @@ def hipchat_hateb(msg: CommandMessage,
                    ", ".join(hateb.allowed_categories))
         return UserContext(message=message,
                            help_message=message,
-                           input_options=(InputOption(".", slack_hateb),))
+                           input_options=(InputOption(".", hipchat_hateb),))
